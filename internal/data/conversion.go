@@ -116,3 +116,45 @@ func QuizToData(q *biz.Quiz) (*Quiz, error) {
 	}
 	return &dataQuiz, nil
 }
+
+func (q *Question) Biz() *biz.Question {
+	var bizQuestion biz.Question
+
+	if !q.ID.IsZero() {
+		bizQuestion.ID = q.ID.Hex()
+	}
+	if q.QuizID != "" {
+		bizQuestion.QuizID = q.QuizID
+	}
+	if q.Question != "" {
+		bizQuestion.Question = q.Question
+	}
+	if q.Hint != "" {
+		bizQuestion.Hint = q.Hint
+	}
+	if q.Difficulty != nil {
+		bizQuestion.Difficulty = *q.Difficulty
+	}
+	if q.Order != 0 {
+		bizQuestion.Order = q.Order
+	}
+	if q.CreatedBy != "" {
+		bizQuestion.CreatedBy = q.CreatedBy
+	}
+	if q.UpdatedBy != "" {
+		bizQuestion.UpdatedBy = q.UpdatedBy
+	}
+	if q.DeletedBy != "" {
+		bizQuestion.DeletedBy = q.DeletedBy
+	}
+	if q.CreatedAt != "" {
+		bizQuestion.CreatedAt = q.CreatedAt
+	}
+	if q.UpdatedAt != "" {
+		bizQuestion.UpdatedAt = q.UpdatedAt
+	}
+	if q.DeletedAt != "" {
+		bizQuestion.DeletedAt = q.DeletedAt
+	}
+	return &bizQuestion
+}

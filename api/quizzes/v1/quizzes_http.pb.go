@@ -269,29 +269,53 @@ func (c *QuizzesHTTPClientImpl) UpdateQuiz(ctx context.Context, in *UpdateQuizRe
 	return &out, nil
 }
 
-const OperationQuizQuestionsAddQuestion = "/quiz.v1.QuizQuestions/AddQuestion"
-const OperationQuizQuestionsDeleteQuestion = "/quiz.v1.QuizQuestions/DeleteQuestion"
-const OperationQuizQuestionsListQuestion = "/quiz.v1.QuizQuestions/ListQuestion"
-const OperationQuizQuestionsUpdateQuestion = "/quiz.v1.QuizQuestions/UpdateQuestion"
+const OperationQuestionsAddAnswer = "/quiz.v1.Questions/AddAnswer"
+const OperationQuestionsCreateQuestion = "/quiz.v1.Questions/CreateQuestion"
+const OperationQuestionsDeleteAnswer = "/quiz.v1.Questions/DeleteAnswer"
+const OperationQuestionsDeleteQuestion = "/quiz.v1.Questions/DeleteQuestion"
+const OperationQuestionsGetQuestion = "/quiz.v1.Questions/GetQuestion"
+const OperationQuestionsListQuestion = "/quiz.v1.Questions/ListQuestion"
+const OperationQuestionsOverrideAnswer = "/quiz.v1.Questions/OverrideAnswer"
+const OperationQuestionsPutAnswers = "/quiz.v1.Questions/PutAnswers"
+const OperationQuestionsReorderAnswers = "/quiz.v1.Questions/ReorderAnswers"
+const OperationQuestionsReorderQuestion = "/quiz.v1.Questions/ReorderQuestion"
+const OperationQuestionsUpdateQuestion = "/quiz.v1.Questions/UpdateQuestion"
+const OperationQuestionsValidateQuestionAnswers = "/quiz.v1.Questions/ValidateQuestionAnswers"
 
-type QuizQuestionsHTTPServer interface {
-	AddQuestion(context.Context, *AddQuestionRequest) (*AddQuestionResponse, error)
+type QuestionsHTTPServer interface {
+	AddAnswer(context.Context, *AddAnswerRequest) (*AddAnswerResponse, error)
+	CreateQuestion(context.Context, *CreateQuestionRequest) (*CreateQuestionResponse, error)
+	DeleteAnswer(context.Context, *DeleteAnswerRequest) (*DeleteAnswerResponse, error)
 	DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionResponse, error)
+	GetQuestion(context.Context, *GetQuestionRequest) (*GetQuestionResponse, error)
 	ListQuestion(context.Context, *ListQuestionRequest) (*ListQuestionResponse, error)
+	OverrideAnswer(context.Context, *OverrideAnswerRequest) (*OverrideAnswerResponse, error)
+	PutAnswers(context.Context, *PutAnswersRequest) (*PutAnswersResponse, error)
+	ReorderAnswers(context.Context, *ReorderAnswersRequest) (*ReorderAnswersResponse, error)
+	ReorderQuestion(context.Context, *ReorderQuestionRequest) (*ReorderQuestionResponse, error)
 	UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error)
+	ValidateQuestionAnswers(context.Context, *ValidateQuestionAnswersRequest) (*ValidateQuestionAnswersResponse, error)
 }
 
-func RegisterQuizQuestionsHTTPServer(s *http.Server, srv QuizQuestionsHTTPServer) {
+func RegisterQuestionsHTTPServer(s *http.Server, srv QuestionsHTTPServer) {
 	r := s.Route("/")
-	r.POST("/quizzes/{quiz_id}/questions", _QuizQuestions_AddQuestion0_HTTP_Handler(srv))
-	r.PATCH("/quizzes/{quiz_id}/questions/{question_id}", _QuizQuestions_UpdateQuestion0_HTTP_Handler(srv))
-	r.DELETE("/quizzes/{quiz_id}/questions/{question_id}", _QuizQuestions_DeleteQuestion0_HTTP_Handler(srv))
-	r.GET("/quizzes/{quiz_id}/questions", _QuizQuestions_ListQuestion0_HTTP_Handler(srv))
+	r.POST("/quizzes/{quiz_id}/questions", _Questions_CreateQuestion0_HTTP_Handler(srv))
+	r.GET("/quizzes/{quiz_id}/questions/{question_id}", _Questions_GetQuestion0_HTTP_Handler(srv))
+	r.GET("/quizzes/{quiz_id}/questions", _Questions_ListQuestion0_HTTP_Handler(srv))
+	r.PATCH("/quizzes/{quiz_id}/questions/{question_id}", _Questions_UpdateQuestion0_HTTP_Handler(srv))
+	r.DELETE("/quizzes/{quiz_id}/questions/{question_id}", _Questions_DeleteQuestion0_HTTP_Handler(srv))
+	r.PATCH("/quizzes/{quiz_id}/questions/{question_id}/reorder", _Questions_ReorderQuestion0_HTTP_Handler(srv))
+	r.POST("/quizzes/{question_id}/answers/validate", _Questions_ValidateQuestionAnswers0_HTTP_Handler(srv))
+	r.POST("/quizzes/{quiz_id}/questions/{question_id}/answers", _Questions_AddAnswer0_HTTP_Handler(srv))
+	r.DELETE("/quizzes/{quiz_id}/questions/{question_id}/answers/{answer_id}", _Questions_DeleteAnswer0_HTTP_Handler(srv))
+	r.PUT("/quizzes/{quiz_id}/questions/{question_id}/answers/{answer_id}", _Questions_OverrideAnswer0_HTTP_Handler(srv))
+	r.PUT("/quizzes/{quiz_id}/questions/{question_id}/answers", _Questions_PutAnswers0_HTTP_Handler(srv))
+	r.PATCH("/quizzes/{quiz_id}/questions/{question_id}/answers/reorder", _Questions_ReorderAnswers0_HTTP_Handler(srv))
 }
 
-func _QuizQuestions_AddQuestion0_HTTP_Handler(srv QuizQuestionsHTTPServer) func(ctx http.Context) error {
+func _Questions_CreateQuestion0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in AddQuestionRequest
+		var in CreateQuestionRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
@@ -301,67 +325,42 @@ func _QuizQuestions_AddQuestion0_HTTP_Handler(srv QuizQuestionsHTTPServer) func(
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizQuestionsAddQuestion)
+		http.SetOperation(ctx, OperationQuestionsCreateQuestion)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.AddQuestion(ctx, req.(*AddQuestionRequest))
+			return srv.CreateQuestion(ctx, req.(*CreateQuestionRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*AddQuestionResponse)
+		reply := out.(*CreateQuestionResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _QuizQuestions_UpdateQuestion0_HTTP_Handler(srv QuizQuestionsHTTPServer) func(ctx http.Context) error {
+func _Questions_GetQuestion0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in UpdateQuestionRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
+		var in GetQuestionRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizQuestionsUpdateQuestion)
+		http.SetOperation(ctx, OperationQuestionsGetQuestion)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateQuestion(ctx, req.(*UpdateQuestionRequest))
+			return srv.GetQuestion(ctx, req.(*GetQuestionRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*UpdateQuestionResponse)
+		reply := out.(*GetQuestionResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _QuizQuestions_DeleteQuestion0_HTTP_Handler(srv QuizQuestionsHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in DeleteQuestionRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindVars(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationQuizQuestionsDeleteQuestion)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DeleteQuestion(ctx, req.(*DeleteQuestionRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*DeleteQuestionResponse)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _QuizQuestions_ListQuestion0_HTTP_Handler(srv QuizQuestionsHTTPServer) func(ctx http.Context) error {
+func _Questions_ListQuestion0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ListQuestionRequest
 		if err := ctx.BindQuery(&in); err != nil {
@@ -370,7 +369,7 @@ func _QuizQuestions_ListQuestion0_HTTP_Handler(srv QuizQuestionsHTTPServer) func
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizQuestionsListQuestion)
+		http.SetOperation(ctx, OperationQuestionsListQuestion)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.ListQuestion(ctx, req.(*ListQuestionRequest))
 		})
@@ -383,97 +382,79 @@ func _QuizQuestions_ListQuestion0_HTTP_Handler(srv QuizQuestionsHTTPServer) func
 	}
 }
 
-type QuizQuestionsHTTPClient interface {
-	AddQuestion(ctx context.Context, req *AddQuestionRequest, opts ...http.CallOption) (rsp *AddQuestionResponse, err error)
-	DeleteQuestion(ctx context.Context, req *DeleteQuestionRequest, opts ...http.CallOption) (rsp *DeleteQuestionResponse, err error)
-	ListQuestion(ctx context.Context, req *ListQuestionRequest, opts ...http.CallOption) (rsp *ListQuestionResponse, err error)
-	UpdateQuestion(ctx context.Context, req *UpdateQuestionRequest, opts ...http.CallOption) (rsp *UpdateQuestionResponse, err error)
-}
-
-type QuizQuestionsHTTPClientImpl struct {
-	cc *http.Client
-}
-
-func NewQuizQuestionsHTTPClient(client *http.Client) QuizQuestionsHTTPClient {
-	return &QuizQuestionsHTTPClientImpl{client}
-}
-
-func (c *QuizQuestionsHTTPClientImpl) AddQuestion(ctx context.Context, in *AddQuestionRequest, opts ...http.CallOption) (*AddQuestionResponse, error) {
-	var out AddQuestionResponse
-	pattern := "/quizzes/{quiz_id}/questions"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationQuizQuestionsAddQuestion))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
+func _Questions_UpdateQuestion0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateQuestionRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationQuestionsUpdateQuestion)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateQuestion(ctx, req.(*UpdateQuestionRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*UpdateQuestionResponse)
+		return ctx.Result(200, reply)
 	}
-	return &out, nil
 }
 
-func (c *QuizQuestionsHTTPClientImpl) DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...http.CallOption) (*DeleteQuestionResponse, error) {
-	var out DeleteQuestionResponse
-	pattern := "/quizzes/{quiz_id}/questions/{question_id}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationQuizQuestionsDeleteQuestion))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
+func _Questions_DeleteQuestion0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteQuestionRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationQuestionsDeleteQuestion)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteQuestion(ctx, req.(*DeleteQuestionRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*DeleteQuestionResponse)
+		return ctx.Result(200, reply)
 	}
-	return &out, nil
 }
 
-func (c *QuizQuestionsHTTPClientImpl) ListQuestion(ctx context.Context, in *ListQuestionRequest, opts ...http.CallOption) (*ListQuestionResponse, error) {
-	var out ListQuestionResponse
-	pattern := "/quizzes/{quiz_id}/questions"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationQuizQuestionsListQuestion))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
+func _Questions_ReorderQuestion0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ReorderQuestionRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationQuestionsReorderQuestion)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ReorderQuestion(ctx, req.(*ReorderQuestionRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ReorderQuestionResponse)
+		return ctx.Result(200, reply)
 	}
-	return &out, nil
 }
 
-func (c *QuizQuestionsHTTPClientImpl) UpdateQuestion(ctx context.Context, in *UpdateQuestionRequest, opts ...http.CallOption) (*UpdateQuestionResponse, error) {
-	var out UpdateQuestionResponse
-	pattern := "/quizzes/{quiz_id}/questions/{question_id}"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationQuizQuestionsUpdateQuestion))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-const OperationQuizAnswersCreateChoice = "/quiz.v1.QuizAnswers/CreateChoice"
-const OperationQuizAnswersDeleteChoice = "/quiz.v1.QuizAnswers/DeleteChoice"
-const OperationQuizAnswersListChoice = "/quiz.v1.QuizAnswers/ListChoice"
-const OperationQuizAnswersUpdateChoice = "/quiz.v1.QuizAnswers/UpdateChoice"
-const OperationQuizAnswersValidateQuestionAnswers = "/quiz.v1.QuizAnswers/ValidateQuestionAnswers"
-
-type QuizAnswersHTTPServer interface {
-	CreateChoice(context.Context, *CreateChoiceRequest) (*CreateChoiceResponse, error)
-	DeleteChoice(context.Context, *DeleteChoiceRequest) (*DeleteChoiceResponse, error)
-	ListChoice(context.Context, *ListChoiceRequest) (*ListChoiceResponse, error)
-	UpdateChoice(context.Context, *UpdateChoiceRequest) (*UpdateChoiceResponse, error)
-	ValidateQuestionAnswers(context.Context, *ValidateQuestionAnswersRequest) (*ValidateQuestionAnswersResponse, error)
-}
-
-func RegisterQuizAnswersHTTPServer(s *http.Server, srv QuizAnswersHTTPServer) {
-	r := s.Route("/")
-	r.POST("/quizzes/{quiz_id}/questions/{question_id}/answers/validate", _QuizAnswers_ValidateQuestionAnswers0_HTTP_Handler(srv))
-	r.POST("/quizzes/{quiz_id}/questions/{question_id}/choices", _QuizAnswers_CreateChoice0_HTTP_Handler(srv))
-	r.PATCH("/quizzes/{quiz_id}/questions/{question_id}/choices/{choice_id}", _QuizAnswers_UpdateChoice0_HTTP_Handler(srv))
-	r.DELETE("/quizzes/{quiz_id}/questions/{question_id}/choices/{choice_id}", _QuizAnswers_DeleteChoice0_HTTP_Handler(srv))
-	r.GET("/quizzes/{quiz_id}/questions/{question_id}/choices", _QuizAnswers_ListChoice0_HTTP_Handler(srv))
-}
-
-func _QuizAnswers_ValidateQuestionAnswers0_HTTP_Handler(srv QuizAnswersHTTPServer) func(ctx http.Context) error {
+func _Questions_ValidateQuestionAnswers0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ValidateQuestionAnswersRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -485,7 +466,7 @@ func _QuizAnswers_ValidateQuestionAnswers0_HTTP_Handler(srv QuizAnswersHTTPServe
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizAnswersValidateQuestionAnswers)
+		http.SetOperation(ctx, OperationQuestionsValidateQuestionAnswers)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.ValidateQuestionAnswers(ctx, req.(*ValidateQuestionAnswersRequest))
 		})
@@ -498,9 +479,9 @@ func _QuizAnswers_ValidateQuestionAnswers0_HTTP_Handler(srv QuizAnswersHTTPServe
 	}
 }
 
-func _QuizAnswers_CreateChoice0_HTTP_Handler(srv QuizAnswersHTTPServer) func(ctx http.Context) error {
+func _Questions_AddAnswer0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CreateChoiceRequest
+		var in AddAnswerRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
@@ -510,22 +491,44 @@ func _QuizAnswers_CreateChoice0_HTTP_Handler(srv QuizAnswersHTTPServer) func(ctx
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizAnswersCreateChoice)
+		http.SetOperation(ctx, OperationQuestionsAddAnswer)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateChoice(ctx, req.(*CreateChoiceRequest))
+			return srv.AddAnswer(ctx, req.(*AddAnswerRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*CreateChoiceResponse)
+		reply := out.(*AddAnswerResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _QuizAnswers_UpdateChoice0_HTTP_Handler(srv QuizAnswersHTTPServer) func(ctx http.Context) error {
+func _Questions_DeleteAnswer0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in UpdateChoiceRequest
+		var in DeleteAnswerRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationQuestionsDeleteAnswer)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteAnswer(ctx, req.(*DeleteAnswerRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*DeleteAnswerResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Questions_OverrideAnswer0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in OverrideAnswerRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
@@ -535,84 +538,97 @@ func _QuizAnswers_UpdateChoice0_HTTP_Handler(srv QuizAnswersHTTPServer) func(ctx
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizAnswersUpdateChoice)
+		http.SetOperation(ctx, OperationQuestionsOverrideAnswer)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateChoice(ctx, req.(*UpdateChoiceRequest))
+			return srv.OverrideAnswer(ctx, req.(*OverrideAnswerRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*UpdateChoiceResponse)
+		reply := out.(*OverrideAnswerResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _QuizAnswers_DeleteChoice0_HTTP_Handler(srv QuizAnswersHTTPServer) func(ctx http.Context) error {
+func _Questions_PutAnswers0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in DeleteChoiceRequest
+		var in PutAnswersRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizAnswersDeleteChoice)
+		http.SetOperation(ctx, OperationQuestionsPutAnswers)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DeleteChoice(ctx, req.(*DeleteChoiceRequest))
+			return srv.PutAnswers(ctx, req.(*PutAnswersRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*DeleteChoiceResponse)
+		reply := out.(*PutAnswersResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
-func _QuizAnswers_ListChoice0_HTTP_Handler(srv QuizAnswersHTTPServer) func(ctx http.Context) error {
+func _Questions_ReorderAnswers0_HTTP_Handler(srv QuestionsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ListChoiceRequest
+		var in ReorderAnswersRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		if err := ctx.BindVars(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationQuizAnswersListChoice)
+		http.SetOperation(ctx, OperationQuestionsReorderAnswers)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListChoice(ctx, req.(*ListChoiceRequest))
+			return srv.ReorderAnswers(ctx, req.(*ReorderAnswersRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*ListChoiceResponse)
+		reply := out.(*ReorderAnswersResponse)
 		return ctx.Result(200, reply)
 	}
 }
 
-type QuizAnswersHTTPClient interface {
-	CreateChoice(ctx context.Context, req *CreateChoiceRequest, opts ...http.CallOption) (rsp *CreateChoiceResponse, err error)
-	DeleteChoice(ctx context.Context, req *DeleteChoiceRequest, opts ...http.CallOption) (rsp *DeleteChoiceResponse, err error)
-	ListChoice(ctx context.Context, req *ListChoiceRequest, opts ...http.CallOption) (rsp *ListChoiceResponse, err error)
-	UpdateChoice(ctx context.Context, req *UpdateChoiceRequest, opts ...http.CallOption) (rsp *UpdateChoiceResponse, err error)
+type QuestionsHTTPClient interface {
+	AddAnswer(ctx context.Context, req *AddAnswerRequest, opts ...http.CallOption) (rsp *AddAnswerResponse, err error)
+	CreateQuestion(ctx context.Context, req *CreateQuestionRequest, opts ...http.CallOption) (rsp *CreateQuestionResponse, err error)
+	DeleteAnswer(ctx context.Context, req *DeleteAnswerRequest, opts ...http.CallOption) (rsp *DeleteAnswerResponse, err error)
+	DeleteQuestion(ctx context.Context, req *DeleteQuestionRequest, opts ...http.CallOption) (rsp *DeleteQuestionResponse, err error)
+	GetQuestion(ctx context.Context, req *GetQuestionRequest, opts ...http.CallOption) (rsp *GetQuestionResponse, err error)
+	ListQuestion(ctx context.Context, req *ListQuestionRequest, opts ...http.CallOption) (rsp *ListQuestionResponse, err error)
+	OverrideAnswer(ctx context.Context, req *OverrideAnswerRequest, opts ...http.CallOption) (rsp *OverrideAnswerResponse, err error)
+	PutAnswers(ctx context.Context, req *PutAnswersRequest, opts ...http.CallOption) (rsp *PutAnswersResponse, err error)
+	ReorderAnswers(ctx context.Context, req *ReorderAnswersRequest, opts ...http.CallOption) (rsp *ReorderAnswersResponse, err error)
+	ReorderQuestion(ctx context.Context, req *ReorderQuestionRequest, opts ...http.CallOption) (rsp *ReorderQuestionResponse, err error)
+	UpdateQuestion(ctx context.Context, req *UpdateQuestionRequest, opts ...http.CallOption) (rsp *UpdateQuestionResponse, err error)
 	ValidateQuestionAnswers(ctx context.Context, req *ValidateQuestionAnswersRequest, opts ...http.CallOption) (rsp *ValidateQuestionAnswersResponse, err error)
 }
 
-type QuizAnswersHTTPClientImpl struct {
+type QuestionsHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewQuizAnswersHTTPClient(client *http.Client) QuizAnswersHTTPClient {
-	return &QuizAnswersHTTPClientImpl{client}
+func NewQuestionsHTTPClient(client *http.Client) QuestionsHTTPClient {
+	return &QuestionsHTTPClientImpl{client}
 }
 
-func (c *QuizAnswersHTTPClientImpl) CreateChoice(ctx context.Context, in *CreateChoiceRequest, opts ...http.CallOption) (*CreateChoiceResponse, error) {
-	var out CreateChoiceResponse
-	pattern := "/quizzes/{quiz_id}/questions/{question_id}/choices"
+func (c *QuestionsHTTPClientImpl) AddAnswer(ctx context.Context, in *AddAnswerRequest, opts ...http.CallOption) (*AddAnswerResponse, error) {
+	var out AddAnswerResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}/answers"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationQuizAnswersCreateChoice))
+	opts = append(opts, http.Operation(OperationQuestionsAddAnswer))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -621,11 +637,24 @@ func (c *QuizAnswersHTTPClientImpl) CreateChoice(ctx context.Context, in *Create
 	return &out, nil
 }
 
-func (c *QuizAnswersHTTPClientImpl) DeleteChoice(ctx context.Context, in *DeleteChoiceRequest, opts ...http.CallOption) (*DeleteChoiceResponse, error) {
-	var out DeleteChoiceResponse
-	pattern := "/quizzes/{quiz_id}/questions/{question_id}/choices/{choice_id}"
+func (c *QuestionsHTTPClientImpl) CreateQuestion(ctx context.Context, in *CreateQuestionRequest, opts ...http.CallOption) (*CreateQuestionResponse, error) {
+	var out CreateQuestionResponse
+	pattern := "/quizzes/{quiz_id}/questions"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationQuestionsCreateQuestion))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionsHTTPClientImpl) DeleteAnswer(ctx context.Context, in *DeleteAnswerRequest, opts ...http.CallOption) (*DeleteAnswerResponse, error) {
+	var out DeleteAnswerResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}/answers/{answer_id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationQuizAnswersDeleteChoice))
+	opts = append(opts, http.Operation(OperationQuestionsDeleteAnswer))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
@@ -634,11 +663,24 @@ func (c *QuizAnswersHTTPClientImpl) DeleteChoice(ctx context.Context, in *Delete
 	return &out, nil
 }
 
-func (c *QuizAnswersHTTPClientImpl) ListChoice(ctx context.Context, in *ListChoiceRequest, opts ...http.CallOption) (*ListChoiceResponse, error) {
-	var out ListChoiceResponse
-	pattern := "/quizzes/{quiz_id}/questions/{question_id}/choices"
+func (c *QuestionsHTTPClientImpl) DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...http.CallOption) (*DeleteQuestionResponse, error) {
+	var out DeleteQuestionResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationQuizAnswersListChoice))
+	opts = append(opts, http.Operation(OperationQuestionsDeleteQuestion))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionsHTTPClientImpl) GetQuestion(ctx context.Context, in *GetQuestionRequest, opts ...http.CallOption) (*GetQuestionResponse, error) {
+	var out GetQuestionResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationQuestionsGetQuestion))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -647,11 +689,50 @@ func (c *QuizAnswersHTTPClientImpl) ListChoice(ctx context.Context, in *ListChoi
 	return &out, nil
 }
 
-func (c *QuizAnswersHTTPClientImpl) UpdateChoice(ctx context.Context, in *UpdateChoiceRequest, opts ...http.CallOption) (*UpdateChoiceResponse, error) {
-	var out UpdateChoiceResponse
-	pattern := "/quizzes/{quiz_id}/questions/{question_id}/choices/{choice_id}"
+func (c *QuestionsHTTPClientImpl) ListQuestion(ctx context.Context, in *ListQuestionRequest, opts ...http.CallOption) (*ListQuestionResponse, error) {
+	var out ListQuestionResponse
+	pattern := "/quizzes/{quiz_id}/questions"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationQuestionsListQuestion))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionsHTTPClientImpl) OverrideAnswer(ctx context.Context, in *OverrideAnswerRequest, opts ...http.CallOption) (*OverrideAnswerResponse, error) {
+	var out OverrideAnswerResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}/answers/{answer_id}"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationQuizAnswersUpdateChoice))
+	opts = append(opts, http.Operation(OperationQuestionsOverrideAnswer))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionsHTTPClientImpl) PutAnswers(ctx context.Context, in *PutAnswersRequest, opts ...http.CallOption) (*PutAnswersResponse, error) {
+	var out PutAnswersResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}/answers"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationQuestionsPutAnswers))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionsHTTPClientImpl) ReorderAnswers(ctx context.Context, in *ReorderAnswersRequest, opts ...http.CallOption) (*ReorderAnswersResponse, error) {
+	var out ReorderAnswersResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}/answers/reorder"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationQuestionsReorderAnswers))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
 	if err != nil {
@@ -660,11 +741,37 @@ func (c *QuizAnswersHTTPClientImpl) UpdateChoice(ctx context.Context, in *Update
 	return &out, nil
 }
 
-func (c *QuizAnswersHTTPClientImpl) ValidateQuestionAnswers(ctx context.Context, in *ValidateQuestionAnswersRequest, opts ...http.CallOption) (*ValidateQuestionAnswersResponse, error) {
-	var out ValidateQuestionAnswersResponse
-	pattern := "/quizzes/{quiz_id}/questions/{question_id}/answers/validate"
+func (c *QuestionsHTTPClientImpl) ReorderQuestion(ctx context.Context, in *ReorderQuestionRequest, opts ...http.CallOption) (*ReorderQuestionResponse, error) {
+	var out ReorderQuestionResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}/reorder"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationQuizAnswersValidateQuestionAnswers))
+	opts = append(opts, http.Operation(OperationQuestionsReorderQuestion))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionsHTTPClientImpl) UpdateQuestion(ctx context.Context, in *UpdateQuestionRequest, opts ...http.CallOption) (*UpdateQuestionResponse, error) {
+	var out UpdateQuestionResponse
+	pattern := "/quizzes/{quiz_id}/questions/{question_id}"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationQuestionsUpdateQuestion))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *QuestionsHTTPClientImpl) ValidateQuestionAnswers(ctx context.Context, in *ValidateQuestionAnswersRequest, opts ...http.CallOption) (*ValidateQuestionAnswersResponse, error) {
+	var out ValidateQuestionAnswersResponse
+	pattern := "/quizzes/{question_id}/answers/validate"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationQuestionsValidateQuestionAnswers))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

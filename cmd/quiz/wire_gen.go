@@ -43,6 +43,9 @@ func wireApp(contextContext context.Context, bootstrap *conf.Bootstrap, confServ
 	quizRepo := data.NewQuizRepo(dataData, logger, tracer)
 	quizUsecase := biz.NewQuizUsecase(quizRepo, logger, tracer)
 	quizzesService := service.NewQuizzesService(quizUsecase, logger, tracer)
+	questionsRepo := data.NewQuestionsRepo(dataData, logger, tracer)
+	questionsUsecase := biz.NewQuestionUsecase(questionsRepo, logger, tracer)
+	questionsService := service.NewQuestionsService(questionsUsecase, logger, tracer)
 	meterProvider, err := dep.NewMeterProvider(bootstrap)
 	if err != nil {
 		cleanup()
@@ -53,12 +56,12 @@ func wireApp(contextContext context.Context, bootstrap *conf.Bootstrap, confServ
 		cleanup()
 		return nil, nil, err
 	}
-	grpcServer, err := server.NewGRPCServer(confServer, quizzesService, logger, meter, tracerProvider)
+	grpcServer, err := server.NewGRPCServer(confServer, quizzesService, questionsService, logger, meter, tracerProvider)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	httpServer, err := server.NewHTTPServer(confServer, quizzesService, logger, meter, tracerProvider)
+	httpServer, err := server.NewHTTPServer(confServer, quizzesService, questionsService, logger, meter, tracerProvider)
 	if err != nil {
 		cleanup()
 		return nil, nil, err

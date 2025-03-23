@@ -3,4 +3,4 @@ package service
 import "github.com/google/wire"
 
 // ProviderSet is service providers.
-var ServiceProviderSet = wire.NewSet(NewQuizzesService)
+var ServiceProviderSet = wire.NewSet(NewQuizzesService, NewQuestionsService)

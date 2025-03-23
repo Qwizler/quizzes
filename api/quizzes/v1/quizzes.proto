@@ -57,62 +57,6 @@ service Quizzes {
   }
 }
 
-service QuizQuestions {
-  rpc AddQuestion (AddQuestionRequest) returns (AddQuestionResponse) {
-    option (google.api.http) = {
-      post: "/quizzes/{quiz_id}/questions"
-      body: "*"
-    };
-  }
-  rpc UpdateQuestion (UpdateQuestionRequest) returns (UpdateQuestionResponse) {
-    option (google.api.http) = {
-      patch: "/quizzes/{quiz_id}/questions/{question_id}"
-      body: "*"
-    };
-  }
-  rpc DeleteQuestion (DeleteQuestionRequest) returns (DeleteQuestionResponse) {
-    option (google.api.http) = {
-      delete: "/quizzes/{quiz_id}/questions/{question_id}"
-    };
-  }
-  rpc ListQuestion (ListQuestionRequest) returns (ListQuestionResponse) {
-    option (google.api.http) = {
-      get: "/quizzes/{quiz_id}/questions"
-    };
-  }
-}
-
-service QuizAnswers {
-  rpc ValidateQuestionAnswers (ValidateQuestionAnswersRequest) returns (ValidateQuestionAnswersResponse) {
-    option (google.api.http) = {
-      post: "/quizzes/{quiz_id}/questions/{question_id}/answers/validate"
-      body: "*"
-    };
-  }
-  rpc CreateChoice (CreateChoiceRequest) returns (CreateChoiceResponse) {
-    option (google.api.http) = {
-      post: "/quizzes/{quiz_id}/questions/{question_id}/choices"
-      body: "*"
-    };
-  }
-  rpc UpdateChoice (UpdateChoiceRequest) returns (UpdateChoiceResponse) {
-    option (google.api.http) = {
-      patch: "/quizzes/{quiz_id}/questions/{question_id}/choices/{choice_id}"
-      body: "*"
-    };
-  }
-  rpc DeleteChoice (DeleteChoiceRequest) returns (DeleteChoiceResponse) {
-    option (google.api.http) = {
-      delete: "/quizzes/{quiz_id}/questions/{question_id}/choices/{choice_id}"
-    };
-  }
-  rpc ListChoice (ListChoiceRequest) returns (ListChoiceResponse) {
-    option (google.api.http) = {
-      get: "/quizzes/{quiz_id}/questions/{question_id}/choices"
-    };
-  }
-}
-
 enum Difficulty{
   EASY = 0;
   MEDIUM = 1;
@@ -120,21 +64,6 @@ enum Difficulty{
   EXPERT = 3;
 }
 
-message Choice {
-  string id = 1;
-  string choice = 2;
-  float order = 3;
-  bool is_correct = 4;
-}
-
-message QuizQuestion {
-  string id = 1;
-  string question = 2;
-  repeated string answers = 3;
-  uint32 correct_answer = 4; // 0-based index
-  Difficulty difficulty = 5;
-  Audit audit = 6;
-}
 
 message Quiz {
   string id = 1;
@@ -211,28 +140,155 @@ message SearchQuizResponse {
   optional Pagination pagination = 2;
 }
 
-// Quiz Question
 
-message AddQuestionRequest {
+service Questions {
+  rpc CreateQuestion (CreateQuestionRequest) returns (CreateQuestionResponse) {
+    option (google.api.http) = {
+      post: "/quizzes/{quiz_id}/questions"
+      body: "*"
+    };
+  }
+  rpc GetQuestion (GetQuestionRequest) returns (GetQuestionResponse) {
+    option (google.api.http) = {
+      get: "/quizzes/{quiz_id}/questions/{question_id}"
+    };
+  }
+  rpc ListQuestion (ListQuestionRequest) returns (ListQuestionResponse) {
+    option (google.api.http) = {
+      get: "/quizzes/{quiz_id}/questions"
+    };
+  }
+  rpc UpdateQuestion (UpdateQuestionRequest) returns (UpdateQuestionResponse) {
+    option (google.api.http) = {
+      patch: "/quizzes/{quiz_id}/questions/{question_id}"
+      body: "*"
+    };
+  }
+  rpc DeleteQuestion (DeleteQuestionRequest) returns (DeleteQuestionResponse) {
+    option (google.api.http) = {
+      delete: "/quizzes/{quiz_id}/questions/{question_id}"
+    };
+  }
+  rpc ReorderQuestion (ReorderQuestionRequest) returns (ReorderQuestionResponse) {
+    option (google.api.http) = {
+      patch: "/quizzes/{quiz_id}/questions/{question_id}/reorder"
+      body: "*"
+    };
+  }
+  rpc ValidateQuestionAnswers (ValidateQuestionAnswersRequest) returns (ValidateQuestionAnswersResponse) {
+    option (google.api.http) = {
+      post: "/quizzes/{question_id}/answers/validate"
+      body: "*"
+    };
+  }
+  rpc AddAnswer (AddAnswerRequest) returns (AddAnswerResponse) {
+    option (google.api.http) = {
+      post: "/quizzes/{quiz_id}/questions/{question_id}/answers"
+      body: "*"
+    };
+  }
+  rpc DeleteAnswer (DeleteAnswerRequest) returns (DeleteAnswerResponse) {
+    option (google.api.http) = {
+      delete: "/quizzes/{quiz_id}/questions/{question_id}/answers/{answer_id}"
+    };
+  }
+  rpc OverrideAnswer (OverrideAnswerRequest) returns (OverrideAnswerResponse) {
+    option (google.api.http) = {
+      put: "/quizzes/{quiz_id}/questions/{question_id}/answers/{answer_id}"
+      body: "*"
+    };
+  }
+  rpc PutAnswers (PutAnswersRequest) returns (PutAnswersResponse) {
+    option (google.api.http) = {
+      put: "/quizzes/{quiz_id}/questions/{question_id}/answers"
+      body: "*"
+    };
+  }
+  rpc ReorderAnswers (ReorderAnswersRequest) returns (ReorderAnswersResponse) {
+    option (google.api.http) = {
+      patch: "/quizzes/{quiz_id}/questions/{question_id}/answers/reorder"
+      body: "*"
+    };
+  }
+}
+
+message Answer {
+  string id = 1;
+  string text = 2;
+  bool is_correct = 3;
+  optional string explanation = 4;
+}
+message Question {
+  string id = 1;
+  string quiz_id = 2;
+  string question = 3;
+  optional string hint = 4;
+  repeated string answers = 5;
+  Difficulty difficulty = 6;
+  float order = 7;
+  Audit audit = 8;
+}
+
+message AnswerCreation{
+  string Text = 1;
+  bool IsCorrect = 2;
+  optional string explanation = 3;
+}
+message CreateQuestionRequest {
   string quiz_id = 1;
   string question = 2;
-  Difficulty difficulty = 5;
-  float order = 6;
+  optional Difficulty difficulty = 3;
+  repeated AnswerCreation answers = 4;
+  float order = 5;
+  optional string hint = 6;
 }
-message AddQuestionResponse {
+
+message CreateQuestionResponse {
+  string id = 1;
+}
+
+message GetQuestionRequest {
   string quiz_id = 1;
-  QuizQuestion question = 2;
+  string question_id = 2;
+}
+
+message GetQuestionResponse {
+  Question question = 1;
+}
+
+message ListQuestionRequest {
+  string quiz_id = 1;
+  optional Pagination pagination = 2;
+}
+
+message ListQuestionResponse {
+  repeated Question questions = 1;
+  Pagination pagination = 2;
 }
 
 message UpdateQuestionRequest {
   string quiz_id = 1;
   string question_id = 2;
-  QuizQuestion question = 3;
+  optional string question =4;
+  optional string hint = 5;
+  optional Difficulty difficulty = 6;
 }
 message UpdateQuestionResponse {
+  Question question = 1;
+}
+
+message ReorderQuestionRequest {
   string quiz_id = 1;
   string question_id = 2;
-  QuizQuestion question = 3;
+  optional string above_question_id = 3;
+  optional string below_question_id = 4;
+  optional bool first = 5;
+  optional bool last = 6;
+}
+message ReorderQuestionResponse {
+  string quiz_id = 1;
+  string question_id = 2;
+  float order = 3;
 }
 
 message DeleteQuestionRequest {
@@ -241,71 +297,82 @@ message DeleteQuestionRequest {
 }
 message DeleteQuestionResponse {
   string quiz_id = 1;
-}
-
-message ListQuestionRequest {
-  string quiz_id = 1;
-}
-message ListQuestionResponse {
-  repeated QuizQuestion questions = 1;
-}
-
-message CreateChoiceRequest {
-  string quiz_id = 1;
   string question_id = 2;
-  string choice = 3;
-  float order = 4;
-  bool is_correct = 5;
-}
-message CreateChoiceResponse {
-  string quiz_id = 1;
-  string question_id = 2;
-  Choice choice = 3;
 }
 
-message UpdateChoiceRequest {
-  string quiz_id = 1;
-  string question_id = 2;
-  string choice_id = 3;
-  string choice = 4;
-  float order = 5;
-  bool is_correct = 6;
+message UserAnswer {
+  string answer_id = 1;
+  bool checked = 2;
 }
-message UpdateChoiceResponse {
-  string quiz_id = 1;
-  string question_id = 2;
-  string choice_id = 3;
-  Choice choice = 4;
-}
-
-message DeleteChoiceRequest {
-  string quiz_id = 1;
-  string question_id = 2;
-  string choice_id = 3;
-}
-message DeleteChoiceResponse {
-  string quiz_id = 1;
-}
-
-message ListChoiceRequest {
-  string quiz_id = 1;
-  string question_id = 2;
-
-}
-message ListChoiceResponse {
-  repeated Choice choices = 1;
-}
-
-
 message AnswerResult {
-  string answer = 1;
-  bool is_correct = 2;
+  string answer_id = 1;
+  bool is_valid = 2;
+  string explanation = 3;
 }
+
 message ValidateQuestionAnswersRequest {
-  string quiz_id = 1;
-  string question_id = 2;
-  repeated string answers = 3;
+  string question_id = 1;
+  repeated UserAnswer answers = 2;
 }
 message ValidateQuestionAnswersResponse {
-  repeated AnswerResult results = 1;
+  string question_id = 1;
+  repeated AnswerResult results = 2;
+  float score = 3;
+}
+
+message AddAnswerRequest {
+  string quiz_id = 1;
+  string question_id = 2;
+  AnswerCreation answer = 3;
+}
+message AddAnswerResponse {
+  string quiz_id = 1;
+  string question_id = 2;
+  Answer answer = 3;
+}
+
+message DeleteAnswerRequest {
+  string quiz_id = 1;
+  string question_id = 2;
+  string answer_id = 3;
+}
+message DeleteAnswerResponse {
+  string quiz_id = 1;
+  string question_id = 2;
+  string answer_id = 3;
+}
+
+
+message OverrideAnswerRequest {
+  string quiz_id = 1;
+  string question_id = 2;
+  string answer_id = 3;
+  AnswerCreation answer = 4;
+}
+message OverrideAnswerResponse {
+  string quiz_id = 1;
+  string question_id = 2;
+  Answer answer = 3;
+}
+
+message PutAnswersRequest {
+  string quiz_id = 1;
+  string question_id = 2;
+  repeated AnswerCreation answers = 3;
+}
+message PutAnswersResponse {
+  string quiz_id = 1;
+  string question_id = 2;
+  repeated Answer answers = 3;
+}
+
+message ReorderAnswersRequest {
+  string quiz_id = 1;
+  string question_id = 2;
+  repeated string answer_ids = 3;
+}
+message ReorderAnswersResponse {
+  string quiz_id = 1;
+  string question_id = 2;
+  repeated Answer answers = 3;
 }

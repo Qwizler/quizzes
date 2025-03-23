@@ -19,6 +19,7 @@ import (
 func NewGRPCServer(
 	c *conf.Server,
 	quizzes *service.QuizzesService,
+	questions *service.QuestionsService,
 	logger log.Logger,
 	meter metric.Meter,
 	tp trace.TracerProvider,
@@ -55,5 +56,6 @@ func NewGRPCServer(
 	}
 	srv := grpc.NewServer(opts...)
 	quizzesV1.RegisterQuizzesServer(srv, quizzes)
+	quizzesV1.RegisterQuestionsServer(srv, questions)
 	return srv, nil
 }

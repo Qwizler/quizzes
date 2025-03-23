@@ -21,6 +21,7 @@ import (
 func NewHTTPServer(
 	c *conf.Server,
 	quizzes *service.QuizzesService,
+	questions *service.QuestionsService,
 	logger log.Logger,
 	meter metric.Meter,
 	tp trace.TracerProvider,
@@ -75,5 +76,6 @@ func NewHTTPServer(
 	))
 
 	quizzesV1.RegisterQuizzesHTTPServer(srv, quizzes)
+	quizzesV1.RegisterQuestionsHTTPServer(srv, questions)
 	return srv, nil
 }

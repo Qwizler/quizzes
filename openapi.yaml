@@ -131,17 +131,51 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/quiz.v1.UpdateQuizResponse'
+    /quizzes/{questionId}/answers/validate:
+        post:
+            tags:
+                - Questions
+            operationId: Questions_ValidateQuestionAnswers
+            parameters:
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.ValidateQuestionAnswersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.ValidateQuestionAnswersResponse'
     /quizzes/{quizId}/questions:
         get:
             tags:
-                - QuizQuestions
-            operationId: QuizQuestions_ListQuestion
+                - Questions
+            operationId: Questions_ListQuestion
             parameters:
                 - name: quizId
                   in: path
                   required: true
                   schema:
                     type: string
+                - name: pagination.page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pagination.pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: OK
@@ -151,8 +185,8 @@ paths:
                                 $ref: '#/components/schemas/quiz.v1.ListQuestionResponse'
         post:
             tags:
-                - QuizQuestions
-            operationId: QuizQuestions_AddQuestion
+                - Questions
+            operationId: Questions_CreateQuestion
             parameters:
                 - name: quizId
                   in: path
@@ -163,7 +197,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/quiz.v1.AddQuestionRequest'
+                            $ref: '#/components/schemas/quiz.v1.CreateQuestionRequest'
                 required: true
             responses:
                 "200":
@@ -171,12 +205,34 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/quiz.v1.AddQuestionResponse'
+                                $ref: '#/components/schemas/quiz.v1.CreateQuestionResponse'
     /quizzes/{quizId}/questions/{questionId}:
+        get:
+            tags:
+                - Questions
+            operationId: Questions_GetQuestion
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.GetQuestionResponse'
         delete:
             tags:
-                - QuizQuestions
-            operationId: QuizQuestions_DeleteQuestion
+                - Questions
+            operationId: Questions_DeleteQuestion
             parameters:
                 - name: quizId
                   in: path
@@ -197,8 +253,8 @@ paths:
                                 $ref: '#/components/schemas/quiz.v1.DeleteQuestionResponse'
         patch:
             tags:
-                - QuizQuestions
-            operationId: QuizQuestions_UpdateQuestion
+                - Questions
+            operationId: Questions_UpdateQuestion
             parameters:
                 - name: quizId
                   in: path
@@ -223,11 +279,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/quiz.v1.UpdateQuestionResponse'
-    /quizzes/{quizId}/questions/{questionId}/answers/validate:
-        post:
+    /quizzes/{quizId}/questions/{questionId}/answers:
+        put:
             tags:
-                - QuizAnswers
-            operationId: QuizAnswers_ValidateQuestionAnswers
+                - Questions
+            operationId: Questions_PutAnswers
             parameters:
                 - name: quizId
                   in: path
@@ -243,7 +299,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/quiz.v1.ValidateQuestionAnswersRequest'
+                            $ref: '#/components/schemas/quiz.v1.PutAnswersRequest'
                 required: true
             responses:
                 "200":
@@ -251,34 +307,11 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/quiz.v1.ValidateQuestionAnswersResponse'
-    /quizzes/{quizId}/questions/{questionId}/choices:
-        get:
-            tags:
-                - QuizAnswers
-            operationId: QuizAnswers_ListChoice
-            parameters:
-                - name: quizId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                - name: questionId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/quiz.v1.ListChoiceResponse'
+                                $ref: '#/components/schemas/quiz.v1.PutAnswersResponse'
         post:
             tags:
-                - QuizAnswers
-            operationId: QuizAnswers_CreateChoice
+                - Questions
+            operationId: Questions_AddAnswer
             parameters:
                 - name: quizId
                   in: path
@@ -294,7 +327,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/quiz.v1.CreateChoiceRequest'
+                            $ref: '#/components/schemas/quiz.v1.AddAnswerRequest'
                 required: true
             responses:
                 "200":
@@ -302,39 +335,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/quiz.v1.CreateChoiceResponse'
-    /quizzes/{quizId}/questions/{questionId}/choices/{choiceId}:
-        delete:
-            tags:
-                - QuizAnswers
-            operationId: QuizAnswers_DeleteChoice
-            parameters:
-                - name: quizId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                - name: questionId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                - name: choiceId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/quiz.v1.DeleteChoiceResponse'
+                                $ref: '#/components/schemas/quiz.v1.AddAnswerResponse'
+    /quizzes/{quizId}/questions/{questionId}/answers/reorder:
         patch:
             tags:
-                - QuizAnswers
-            operationId: QuizAnswers_UpdateChoice
+                - Questions
+            operationId: Questions_ReorderAnswers
             parameters:
                 - name: quizId
                   in: path
@@ -346,7 +352,36 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: choiceId
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.ReorderAnswersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.ReorderAnswersResponse'
+    /quizzes/{quizId}/questions/{questionId}/answers/{answerId}:
+        put:
+            tags:
+                - Questions
+            operationId: Questions_OverrideAnswer
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: answerId
                   in: path
                   required: true
                   schema:
@@ -355,7 +390,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/quiz.v1.UpdateChoiceRequest'
+                            $ref: '#/components/schemas/quiz.v1.OverrideAnswerRequest'
                 required: true
             responses:
                 "200":
@@ -363,36 +398,112 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/quiz.v1.UpdateChoiceResponse'
+                                $ref: '#/components/schemas/quiz.v1.OverrideAnswerResponse'
+        delete:
+            tags:
+                - Questions
+            operationId: Questions_DeleteAnswer
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: answerId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.DeleteAnswerResponse'
+    /quizzes/{quizId}/questions/{questionId}/reorder:
+        patch:
+            tags:
+                - Questions
+            operationId: Questions_ReorderQuestion
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.ReorderQuestionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.ReorderQuestionResponse'
 components:
     schemas:
-        quiz.v1.AddQuestionRequest:
+        quiz.v1.AddAnswerRequest:
             type: object
             properties:
                 quizId:
                     type: string
-                question:
+                questionId:
                     type: string
-                difficulty:
-                    type: integer
-                    format: enum
-                order:
-                    type: number
-                    format: float
-        quiz.v1.AddQuestionResponse:
-            type: object
-            properties:
-                quizId:
-                    type: string
-                question:
-                    $ref: '#/components/schemas/quiz.v1.QuizQuestion'
-        quiz.v1.AnswerResult:
-            type: object
-            properties:
                 answer:
+                    $ref: '#/components/schemas/quiz.v1.AnswerCreation'
+        quiz.v1.AddAnswerResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                answer:
+                    $ref: '#/components/schemas/quiz.v1.Answer'
+        quiz.v1.Answer:
+            type: object
+            properties:
+                id:
+                    type: string
+                text:
                     type: string
                 isCorrect:
                     type: boolean
+                explanation:
+                    type: string
+        quiz.v1.AnswerCreation:
+            type: object
+            properties:
+                Text:
+                    type: string
+                IsCorrect:
+                    type: boolean
+                explanation:
+                    type: string
+        quiz.v1.AnswerResult:
+            type: object
+            properties:
+                answerId:
+                    type: string
+                isValid:
+                    type: boolean
+                explanation:
+                    type: string
         quiz.v1.Audit:
             type: object
             properties:
@@ -408,41 +519,30 @@ components:
                     type: string
                 deletedAt:
                     type: string
-        quiz.v1.Choice:
+        quiz.v1.CreateQuestionRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                question:
+                    type: string
+                difficulty:
+                    type: integer
+                    format: enum
+                answers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.AnswerCreation'
+                order:
+                    type: number
+                    format: float
+                hint:
+                    type: string
+        quiz.v1.CreateQuestionResponse:
             type: object
             properties:
                 id:
                     type: string
-                choice:
-                    type: string
-                order:
-                    type: number
-                    format: float
-                isCorrect:
-                    type: boolean
-        quiz.v1.CreateChoiceRequest:
-            type: object
-            properties:
-                quizId:
-                    type: string
-                questionId:
-                    type: string
-                choice:
-                    type: string
-                order:
-                    type: number
-                    format: float
-                isCorrect:
-                    type: boolean
-        quiz.v1.CreateChoiceResponse:
-            type: object
-            properties:
-                quizId:
-                    type: string
-                questionId:
-                    type: string
-                choice:
-                    $ref: '#/components/schemas/quiz.v1.Choice'
         quiz.v1.CreateQuizRequest:
             type: object
             properties:
@@ -471,40 +571,46 @@ components:
             properties:
                 quiz:
                     $ref: '#/components/schemas/quiz.v1.Quiz'
-        quiz.v1.DeleteChoiceResponse:
+        quiz.v1.DeleteAnswerResponse:
             type: object
             properties:
                 quizId:
+                    type: string
+                questionId:
+                    type: string
+                answerId:
                     type: string
         quiz.v1.DeleteQuestionResponse:
             type: object
             properties:
                 quizId:
                     type: string
+                questionId:
+                    type: string
         quiz.v1.DeleteQuizResponse:
             type: object
             properties:
                 id:
                     type: string
+        quiz.v1.GetQuestionResponse:
+            type: object
+            properties:
+                question:
+                    $ref: '#/components/schemas/quiz.v1.Question'
         quiz.v1.GetQuizResponse:
             type: object
             properties:
                 quiz:
                     $ref: '#/components/schemas/quiz.v1.Quiz'
-        quiz.v1.ListChoiceResponse:
-            type: object
-            properties:
-                choices:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/quiz.v1.Choice'
         quiz.v1.ListQuestionResponse:
             type: object
             properties:
                 questions:
                     type: array
                     items:
-                        $ref: '#/components/schemas/quiz.v1.QuizQuestion'
+                        $ref: '#/components/schemas/quiz.v1.Question'
+                pagination:
+                    $ref: '#/components/schemas/quiz.v1.Pagination'
         quiz.v1.ListQuizResponse:
             type: object
             properties:
@@ -514,6 +620,26 @@ components:
                         $ref: '#/components/schemas/quiz.v1.Quiz'
                 pagination:
                     $ref: '#/components/schemas/quiz.v1.Pagination'
+        quiz.v1.OverrideAnswerRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                answerId:
+                    type: string
+                answer:
+                    $ref: '#/components/schemas/quiz.v1.AnswerCreation'
+        quiz.v1.OverrideAnswerResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                answer:
+                    $ref: '#/components/schemas/quiz.v1.Answer'
         quiz.v1.Pagination:
             type: object
             properties:
@@ -523,6 +649,51 @@ components:
                 pageSize:
                     type: integer
                     format: int32
+        quiz.v1.PutAnswersRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                answers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.AnswerCreation'
+        quiz.v1.PutAnswersResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                answers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.Answer'
+        quiz.v1.Question:
+            type: object
+            properties:
+                id:
+                    type: string
+                quizId:
+                    type: string
+                question:
+                    type: string
+                hint:
+                    type: string
+                answers:
+                    type: array
+                    items:
+                        type: string
+                difficulty:
+                    type: integer
+                    format: enum
+                order:
+                    type: number
+                    format: float
+                audit:
+                    $ref: '#/components/schemas/quiz.v1.Audit'
         quiz.v1.Quiz:
             type: object
             properties:
@@ -555,25 +726,53 @@ components:
                         type: string
                 audit:
                     $ref: '#/components/schemas/quiz.v1.Audit'
-        quiz.v1.QuizQuestion:
+        quiz.v1.ReorderAnswersRequest:
             type: object
             properties:
-                id:
+                quizId:
                     type: string
-                question:
+                questionId:
+                    type: string
+                answerIds:
+                    type: array
+                    items:
+                        type: string
+        quiz.v1.ReorderAnswersResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
                     type: string
                 answers:
                     type: array
                     items:
-                        type: string
-                correctAnswer:
-                    type: integer
-                    format: uint32
-                difficulty:
-                    type: integer
-                    format: enum
-                audit:
-                    $ref: '#/components/schemas/quiz.v1.Audit'
+                        $ref: '#/components/schemas/quiz.v1.Answer'
+        quiz.v1.ReorderQuestionRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                aboveQuestionId:
+                    type: string
+                belowQuestionId:
+                    type: string
+                first:
+                    type: boolean
+                last:
+                    type: boolean
+        quiz.v1.ReorderQuestionResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                order:
+                    type: number
+                    format: float
         quiz.v1.SearchQuizResponse:
             type: object
             properties:
@@ -583,33 +782,6 @@ components:
                         $ref: '#/components/schemas/quiz.v1.Quiz'
                 pagination:
                     $ref: '#/components/schemas/quiz.v1.Pagination'
-        quiz.v1.UpdateChoiceRequest:
-            type: object
-            properties:
-                quizId:
-                    type: string
-                questionId:
-                    type: string
-                choiceId:
-                    type: string
-                choice:
-                    type: string
-                order:
-                    type: number
-                    format: float
-                isCorrect:
-                    type: boolean
-        quiz.v1.UpdateChoiceResponse:
-            type: object
-            properties:
-                quizId:
-                    type: string
-                questionId:
-                    type: string
-                choiceId:
-                    type: string
-                choice:
-                    $ref: '#/components/schemas/quiz.v1.Choice'
         quiz.v1.UpdateQuestionRequest:
             type: object
             properties:
@@ -618,16 +790,17 @@ components:
                 questionId:
                     type: string
                 question:
-                    $ref: '#/components/schemas/quiz.v1.QuizQuestion'
+                    type: string
+                hint:
+                    type: string
+                difficulty:
+                    type: integer
+                    format: enum
         quiz.v1.UpdateQuestionResponse:
             type: object
             properties:
-                quizId:
-                    type: string
-                questionId:
-                    type: string
                 question:
-                    $ref: '#/components/schemas/quiz.v1.QuizQuestion'
+                    $ref: '#/components/schemas/quiz.v1.Question'
         quiz.v1.UpdateQuizRequest:
             type: object
             properties:
@@ -658,25 +831,34 @@ components:
             properties:
                 quiz:
                     $ref: '#/components/schemas/quiz.v1.Quiz'
+        quiz.v1.UserAnswer:
+            type: object
+            properties:
+                answerId:
+                    type: string
+                checked:
+                    type: boolean
         quiz.v1.ValidateQuestionAnswersRequest:
             type: object
             properties:
-                quizId:
-                    type: string
                 questionId:
                     type: string
                 answers:
                     type: array
                     items:
-                        type: string
+                        $ref: '#/components/schemas/quiz.v1.UserAnswer'
         quiz.v1.ValidateQuestionAnswersResponse:
             type: object
             properties:
+                questionId:
+                    type: string
                 results:
                     type: array
                     items:
                         $ref: '#/components/schemas/quiz.v1.AnswerResult'
+                score:
+                    type: number
+                    format: float
 tags:
-    - name: QuizAnswers
-    - name: QuizQuestions
+    - name: Questions
     - name: Quizzes

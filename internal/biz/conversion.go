@@ -57,3 +57,46 @@ func QuizToPb(q *Quiz) *pb.Quiz {
 
 	return &quiz
 }
+
+func QuestionToPb(q *Question) *pb.Question {
+	var question pb.Question
+	if q.ID != "" {
+		question.Id = q.ID
+	}
+	if q.QuizID != "" {
+		question.QuizId = q.QuizID
+	}
+	if q.Question != "" {
+		question.Question = q.Question
+	}
+	if q.Hint != "" {
+		question.Hint = &q.Hint
+	}
+	if q.Difficulty != 0 {
+		question.Difficulty = pb.Difficulty(q.Difficulty)
+	}
+	if q.Order != 0 {
+		question.Order = float32(q.Order)
+	}
+	var audit pb.Audit
+	if q.CreatedBy != "" {
+		audit.CreatedBy = &q.CreatedBy
+	}
+	if q.UpdatedBy != "" {
+		audit.UpdatedBy = &q.UpdatedBy
+	}
+	if q.DeletedBy != "" {
+		audit.DeletedBy = &q.DeletedBy
+	}
+	if q.CreatedAt != "" {
+		audit.CreatedAt = q.CreatedAt
+	}
+	if q.UpdatedAt != "" {
+		audit.UpdatedAt = q.UpdatedAt
+	}
+	if q.DeletedAt != "" {
+		audit.DeletedAt = q.DeletedAt
+	}
+	question.Audit = &audit
+	return &question
+}

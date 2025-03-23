@@ -311,469 +311,519 @@ var Quizzes_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	QuizQuestions_AddQuestion_FullMethodName    = "/quiz.v1.QuizQuestions/AddQuestion"
-	QuizQuestions_UpdateQuestion_FullMethodName = "/quiz.v1.QuizQuestions/UpdateQuestion"
-	QuizQuestions_DeleteQuestion_FullMethodName = "/quiz.v1.QuizQuestions/DeleteQuestion"
-	QuizQuestions_ListQuestion_FullMethodName   = "/quiz.v1.QuizQuestions/ListQuestion"
+	Questions_CreateQuestion_FullMethodName          = "/quiz.v1.Questions/CreateQuestion"
+	Questions_GetQuestion_FullMethodName             = "/quiz.v1.Questions/GetQuestion"
+	Questions_ListQuestion_FullMethodName            = "/quiz.v1.Questions/ListQuestion"
+	Questions_UpdateQuestion_FullMethodName          = "/quiz.v1.Questions/UpdateQuestion"
+	Questions_DeleteQuestion_FullMethodName          = "/quiz.v1.Questions/DeleteQuestion"
+	Questions_ReorderQuestion_FullMethodName         = "/quiz.v1.Questions/ReorderQuestion"
+	Questions_ValidateQuestionAnswers_FullMethodName = "/quiz.v1.Questions/ValidateQuestionAnswers"
+	Questions_AddAnswer_FullMethodName               = "/quiz.v1.Questions/AddAnswer"
+	Questions_DeleteAnswer_FullMethodName            = "/quiz.v1.Questions/DeleteAnswer"
+	Questions_OverrideAnswer_FullMethodName          = "/quiz.v1.Questions/OverrideAnswer"
+	Questions_PutAnswers_FullMethodName              = "/quiz.v1.Questions/PutAnswers"
+	Questions_ReorderAnswers_FullMethodName          = "/quiz.v1.Questions/ReorderAnswers"
 )
 
-// QuizQuestionsClient is the client API for QuizQuestions service.
+// QuestionsClient is the client API for Questions service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type QuizQuestionsClient interface {
-	AddQuestion(ctx context.Context, in *AddQuestionRequest, opts ...grpc.CallOption) (*AddQuestionResponse, error)
+type QuestionsClient interface {
+	CreateQuestion(ctx context.Context, in *CreateQuestionRequest, opts ...grpc.CallOption) (*CreateQuestionResponse, error)
+	GetQuestion(ctx context.Context, in *GetQuestionRequest, opts ...grpc.CallOption) (*GetQuestionResponse, error)
+	ListQuestion(ctx context.Context, in *ListQuestionRequest, opts ...grpc.CallOption) (*ListQuestionResponse, error)
 	UpdateQuestion(ctx context.Context, in *UpdateQuestionRequest, opts ...grpc.CallOption) (*UpdateQuestionResponse, error)
 	DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...grpc.CallOption) (*DeleteQuestionResponse, error)
-	ListQuestion(ctx context.Context, in *ListQuestionRequest, opts ...grpc.CallOption) (*ListQuestionResponse, error)
+	ReorderQuestion(ctx context.Context, in *ReorderQuestionRequest, opts ...grpc.CallOption) (*ReorderQuestionResponse, error)
+	ValidateQuestionAnswers(ctx context.Context, in *ValidateQuestionAnswersRequest, opts ...grpc.CallOption) (*ValidateQuestionAnswersResponse, error)
+	AddAnswer(ctx context.Context, in *AddAnswerRequest, opts ...grpc.CallOption) (*AddAnswerResponse, error)
+	DeleteAnswer(ctx context.Context, in *DeleteAnswerRequest, opts ...grpc.CallOption) (*DeleteAnswerResponse, error)
+	OverrideAnswer(ctx context.Context, in *OverrideAnswerRequest, opts ...grpc.CallOption) (*OverrideAnswerResponse, error)
+	PutAnswers(ctx context.Context, in *PutAnswersRequest, opts ...grpc.CallOption) (*PutAnswersResponse, error)
+	ReorderAnswers(ctx context.Context, in *ReorderAnswersRequest, opts ...grpc.CallOption) (*ReorderAnswersResponse, error)
 }
 
-type quizQuestionsClient struct {
+type questionsClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewQuizQuestionsClient(cc grpc.ClientConnInterface) QuizQuestionsClient {
-	return &quizQuestionsClient{cc}
+func NewQuestionsClient(cc grpc.ClientConnInterface) QuestionsClient {
+	return &questionsClient{cc}
 }
 
-func (c *quizQuestionsClient) AddQuestion(ctx context.Context, in *AddQuestionRequest, opts ...grpc.CallOption) (*AddQuestionResponse, error) {
+func (c *questionsClient) CreateQuestion(ctx context.Context, in *CreateQuestionRequest, opts ...grpc.CallOption) (*CreateQuestionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AddQuestionResponse)
-	err := c.cc.Invoke(ctx, QuizQuestions_AddQuestion_FullMethodName, in, out, cOpts...)
+	out := new(CreateQuestionResponse)
+	err := c.cc.Invoke(ctx, Questions_CreateQuestion_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *quizQuestionsClient) UpdateQuestion(ctx context.Context, in *UpdateQuestionRequest, opts ...grpc.CallOption) (*UpdateQuestionResponse, error) {
+func (c *questionsClient) GetQuestion(ctx context.Context, in *GetQuestionRequest, opts ...grpc.CallOption) (*GetQuestionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateQuestionResponse)
-	err := c.cc.Invoke(ctx, QuizQuestions_UpdateQuestion_FullMethodName, in, out, cOpts...)
+	out := new(GetQuestionResponse)
+	err := c.cc.Invoke(ctx, Questions_GetQuestion_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *quizQuestionsClient) DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...grpc.CallOption) (*DeleteQuestionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteQuestionResponse)
-	err := c.cc.Invoke(ctx, QuizQuestions_DeleteQuestion_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *quizQuestionsClient) ListQuestion(ctx context.Context, in *ListQuestionRequest, opts ...grpc.CallOption) (*ListQuestionResponse, error) {
+func (c *questionsClient) ListQuestion(ctx context.Context, in *ListQuestionRequest, opts ...grpc.CallOption) (*ListQuestionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListQuestionResponse)
-	err := c.cc.Invoke(ctx, QuizQuestions_ListQuestion_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Questions_ListQuestion_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// QuizQuestionsServer is the server API for QuizQuestions service.
-// All implementations must embed UnimplementedQuizQuestionsServer
-// for forward compatibility.
-type QuizQuestionsServer interface {
-	AddQuestion(context.Context, *AddQuestionRequest) (*AddQuestionResponse, error)
-	UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error)
-	DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionResponse, error)
-	ListQuestion(context.Context, *ListQuestionRequest) (*ListQuestionResponse, error)
-	mustEmbedUnimplementedQuizQuestionsServer()
+func (c *questionsClient) UpdateQuestion(ctx context.Context, in *UpdateQuestionRequest, opts ...grpc.CallOption) (*UpdateQuestionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateQuestionResponse)
+	err := c.cc.Invoke(ctx, Questions_UpdateQuestion_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-// UnimplementedQuizQuestionsServer must be embedded to have
+func (c *questionsClient) DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...grpc.CallOption) (*DeleteQuestionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteQuestionResponse)
+	err := c.cc.Invoke(ctx, Questions_DeleteQuestion_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questionsClient) ReorderQuestion(ctx context.Context, in *ReorderQuestionRequest, opts ...grpc.CallOption) (*ReorderQuestionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReorderQuestionResponse)
+	err := c.cc.Invoke(ctx, Questions_ReorderQuestion_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questionsClient) ValidateQuestionAnswers(ctx context.Context, in *ValidateQuestionAnswersRequest, opts ...grpc.CallOption) (*ValidateQuestionAnswersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ValidateQuestionAnswersResponse)
+	err := c.cc.Invoke(ctx, Questions_ValidateQuestionAnswers_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questionsClient) AddAnswer(ctx context.Context, in *AddAnswerRequest, opts ...grpc.CallOption) (*AddAnswerResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddAnswerResponse)
+	err := c.cc.Invoke(ctx, Questions_AddAnswer_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questionsClient) DeleteAnswer(ctx context.Context, in *DeleteAnswerRequest, opts ...grpc.CallOption) (*DeleteAnswerResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteAnswerResponse)
+	err := c.cc.Invoke(ctx, Questions_DeleteAnswer_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questionsClient) OverrideAnswer(ctx context.Context, in *OverrideAnswerRequest, opts ...grpc.CallOption) (*OverrideAnswerResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OverrideAnswerResponse)
+	err := c.cc.Invoke(ctx, Questions_OverrideAnswer_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questionsClient) PutAnswers(ctx context.Context, in *PutAnswersRequest, opts ...grpc.CallOption) (*PutAnswersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PutAnswersResponse)
+	err := c.cc.Invoke(ctx, Questions_PutAnswers_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *questionsClient) ReorderAnswers(ctx context.Context, in *ReorderAnswersRequest, opts ...grpc.CallOption) (*ReorderAnswersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReorderAnswersResponse)
+	err := c.cc.Invoke(ctx, Questions_ReorderAnswers_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// QuestionsServer is the server API for Questions service.
+// All implementations must embed UnimplementedQuestionsServer
+// for forward compatibility.
+type QuestionsServer interface {
+	CreateQuestion(context.Context, *CreateQuestionRequest) (*CreateQuestionResponse, error)
+	GetQuestion(context.Context, *GetQuestionRequest) (*GetQuestionResponse, error)
+	ListQuestion(context.Context, *ListQuestionRequest) (*ListQuestionResponse, error)
+	UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error)
+	DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionResponse, error)
+	ReorderQuestion(context.Context, *ReorderQuestionRequest) (*ReorderQuestionResponse, error)
+	ValidateQuestionAnswers(context.Context, *ValidateQuestionAnswersRequest) (*ValidateQuestionAnswersResponse, error)
+	AddAnswer(context.Context, *AddAnswerRequest) (*AddAnswerResponse, error)
+	DeleteAnswer(context.Context, *DeleteAnswerRequest) (*DeleteAnswerResponse, error)
+	OverrideAnswer(context.Context, *OverrideAnswerRequest) (*OverrideAnswerResponse, error)
+	PutAnswers(context.Context, *PutAnswersRequest) (*PutAnswersResponse, error)
+	ReorderAnswers(context.Context, *ReorderAnswersRequest) (*ReorderAnswersResponse, error)
+	mustEmbedUnimplementedQuestionsServer()
+}
+
+// UnimplementedQuestionsServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedQuizQuestionsServer struct{}
+type UnimplementedQuestionsServer struct{}
 
-func (UnimplementedQuizQuestionsServer) AddQuestion(context.Context, *AddQuestionRequest) (*AddQuestionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddQuestion not implemented")
+func (UnimplementedQuestionsServer) CreateQuestion(context.Context, *CreateQuestionRequest) (*CreateQuestionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateQuestion not implemented")
 }
-func (UnimplementedQuizQuestionsServer) UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateQuestion not implemented")
+func (UnimplementedQuestionsServer) GetQuestion(context.Context, *GetQuestionRequest) (*GetQuestionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetQuestion not implemented")
 }
-func (UnimplementedQuizQuestionsServer) DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteQuestion not implemented")
-}
-func (UnimplementedQuizQuestionsServer) ListQuestion(context.Context, *ListQuestionRequest) (*ListQuestionResponse, error) {
+func (UnimplementedQuestionsServer) ListQuestion(context.Context, *ListQuestionRequest) (*ListQuestionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListQuestion not implemented")
 }
-func (UnimplementedQuizQuestionsServer) mustEmbedUnimplementedQuizQuestionsServer() {}
-func (UnimplementedQuizQuestionsServer) testEmbeddedByValue()                       {}
+func (UnimplementedQuestionsServer) UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateQuestion not implemented")
+}
+func (UnimplementedQuestionsServer) DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteQuestion not implemented")
+}
+func (UnimplementedQuestionsServer) ReorderQuestion(context.Context, *ReorderQuestionRequest) (*ReorderQuestionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReorderQuestion not implemented")
+}
+func (UnimplementedQuestionsServer) ValidateQuestionAnswers(context.Context, *ValidateQuestionAnswersRequest) (*ValidateQuestionAnswersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateQuestionAnswers not implemented")
+}
+func (UnimplementedQuestionsServer) AddAnswer(context.Context, *AddAnswerRequest) (*AddAnswerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddAnswer not implemented")
+}
+func (UnimplementedQuestionsServer) DeleteAnswer(context.Context, *DeleteAnswerRequest) (*DeleteAnswerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAnswer not implemented")
+}
+func (UnimplementedQuestionsServer) OverrideAnswer(context.Context, *OverrideAnswerRequest) (*OverrideAnswerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OverrideAnswer not implemented")
+}
+func (UnimplementedQuestionsServer) PutAnswers(context.Context, *PutAnswersRequest) (*PutAnswersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PutAnswers not implemented")
+}
+func (UnimplementedQuestionsServer) ReorderAnswers(context.Context, *ReorderAnswersRequest) (*ReorderAnswersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReorderAnswers not implemented")
+}
+func (UnimplementedQuestionsServer) mustEmbedUnimplementedQuestionsServer() {}
+func (UnimplementedQuestionsServer) testEmbeddedByValue()                   {}
 
-// UnsafeQuizQuestionsServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to QuizQuestionsServer will
+// UnsafeQuestionsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to QuestionsServer will
 // result in compilation errors.
-type UnsafeQuizQuestionsServer interface {
-	mustEmbedUnimplementedQuizQuestionsServer()
+type UnsafeQuestionsServer interface {
+	mustEmbedUnimplementedQuestionsServer()
 }
 
-func RegisterQuizQuestionsServer(s grpc.ServiceRegistrar, srv QuizQuestionsServer) {
-	// If the following call pancis, it indicates UnimplementedQuizQuestionsServer was
+func RegisterQuestionsServer(s grpc.ServiceRegistrar, srv QuestionsServer) {
+	// If the following call pancis, it indicates UnimplementedQuestionsServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&QuizQuestions_ServiceDesc, srv)
+	s.RegisterService(&Questions_ServiceDesc, srv)
 }
 
-func _QuizQuestions_AddQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddQuestionRequest)
+func _Questions_CreateQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateQuestionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizQuestionsServer).AddQuestion(ctx, in)
+		return srv.(QuestionsServer).CreateQuestion(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizQuestions_AddQuestion_FullMethodName,
+		FullMethod: Questions_CreateQuestion_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizQuestionsServer).AddQuestion(ctx, req.(*AddQuestionRequest))
+		return srv.(QuestionsServer).CreateQuestion(ctx, req.(*CreateQuestionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuizQuestions_UpdateQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateQuestionRequest)
+func _Questions_GetQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetQuestionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizQuestionsServer).UpdateQuestion(ctx, in)
+		return srv.(QuestionsServer).GetQuestion(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizQuestions_UpdateQuestion_FullMethodName,
+		FullMethod: Questions_GetQuestion_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizQuestionsServer).UpdateQuestion(ctx, req.(*UpdateQuestionRequest))
+		return srv.(QuestionsServer).GetQuestion(ctx, req.(*GetQuestionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuizQuestions_DeleteQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteQuestionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QuizQuestionsServer).DeleteQuestion(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: QuizQuestions_DeleteQuestion_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizQuestionsServer).DeleteQuestion(ctx, req.(*DeleteQuestionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _QuizQuestions_ListQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Questions_ListQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListQuestionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizQuestionsServer).ListQuestion(ctx, in)
+		return srv.(QuestionsServer).ListQuestion(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizQuestions_ListQuestion_FullMethodName,
+		FullMethod: Questions_ListQuestion_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizQuestionsServer).ListQuestion(ctx, req.(*ListQuestionRequest))
+		return srv.(QuestionsServer).ListQuestion(ctx, req.(*ListQuestionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// QuizQuestions_ServiceDesc is the grpc.ServiceDesc for QuizQuestions service.
-// It's only intended for direct use with grpc.RegisterService,
-// and not to be introspected or modified (even as a copy)
-var QuizQuestions_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "quiz.v1.QuizQuestions",
-	HandlerType: (*QuizQuestionsServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "AddQuestion",
-			Handler:    _QuizQuestions_AddQuestion_Handler,
-		},
-		{
-			MethodName: "UpdateQuestion",
-			Handler:    _QuizQuestions_UpdateQuestion_Handler,
-		},
-		{
-			MethodName: "DeleteQuestion",
-			Handler:    _QuizQuestions_DeleteQuestion_Handler,
-		},
-		{
-			MethodName: "ListQuestion",
-			Handler:    _QuizQuestions_ListQuestion_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "quizzes/v1/quizzes.proto",
-}
-
-const (
-	QuizAnswers_ValidateQuestionAnswers_FullMethodName = "/quiz.v1.QuizAnswers/ValidateQuestionAnswers"
-	QuizAnswers_CreateChoice_FullMethodName            = "/quiz.v1.QuizAnswers/CreateChoice"
-	QuizAnswers_UpdateChoice_FullMethodName            = "/quiz.v1.QuizAnswers/UpdateChoice"
-	QuizAnswers_DeleteChoice_FullMethodName            = "/quiz.v1.QuizAnswers/DeleteChoice"
-	QuizAnswers_ListChoice_FullMethodName              = "/quiz.v1.QuizAnswers/ListChoice"
-)
-
-// QuizAnswersClient is the client API for QuizAnswers service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type QuizAnswersClient interface {
-	ValidateQuestionAnswers(ctx context.Context, in *ValidateQuestionAnswersRequest, opts ...grpc.CallOption) (*ValidateQuestionAnswersResponse, error)
-	CreateChoice(ctx context.Context, in *CreateChoiceRequest, opts ...grpc.CallOption) (*CreateChoiceResponse, error)
-	UpdateChoice(ctx context.Context, in *UpdateChoiceRequest, opts ...grpc.CallOption) (*UpdateChoiceResponse, error)
-	DeleteChoice(ctx context.Context, in *DeleteChoiceRequest, opts ...grpc.CallOption) (*DeleteChoiceResponse, error)
-	ListChoice(ctx context.Context, in *ListChoiceRequest, opts ...grpc.CallOption) (*ListChoiceResponse, error)
-}
-
-type quizAnswersClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewQuizAnswersClient(cc grpc.ClientConnInterface) QuizAnswersClient {
-	return &quizAnswersClient{cc}
-}
-
-func (c *quizAnswersClient) ValidateQuestionAnswers(ctx context.Context, in *ValidateQuestionAnswersRequest, opts ...grpc.CallOption) (*ValidateQuestionAnswersResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ValidateQuestionAnswersResponse)
-	err := c.cc.Invoke(ctx, QuizAnswers_ValidateQuestionAnswers_FullMethodName, in, out, cOpts...)
-	if err != nil {
+func _Questions_UpdateQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateQuestionRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return out, nil
+	if interceptor == nil {
+		return srv.(QuestionsServer).UpdateQuestion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Questions_UpdateQuestion_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestionsServer).UpdateQuestion(ctx, req.(*UpdateQuestionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-func (c *quizAnswersClient) CreateChoice(ctx context.Context, in *CreateChoiceRequest, opts ...grpc.CallOption) (*CreateChoiceResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateChoiceResponse)
-	err := c.cc.Invoke(ctx, QuizAnswers_CreateChoice_FullMethodName, in, out, cOpts...)
-	if err != nil {
+func _Questions_DeleteQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteQuestionRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return out, nil
+	if interceptor == nil {
+		return srv.(QuestionsServer).DeleteQuestion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Questions_DeleteQuestion_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestionsServer).DeleteQuestion(ctx, req.(*DeleteQuestionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-func (c *quizAnswersClient) UpdateChoice(ctx context.Context, in *UpdateChoiceRequest, opts ...grpc.CallOption) (*UpdateChoiceResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateChoiceResponse)
-	err := c.cc.Invoke(ctx, QuizAnswers_UpdateChoice_FullMethodName, in, out, cOpts...)
-	if err != nil {
+func _Questions_ReorderQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReorderQuestionRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return out, nil
-}
-
-func (c *quizAnswersClient) DeleteChoice(ctx context.Context, in *DeleteChoiceRequest, opts ...grpc.CallOption) (*DeleteChoiceResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteChoiceResponse)
-	err := c.cc.Invoke(ctx, QuizAnswers_DeleteChoice_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
+	if interceptor == nil {
+		return srv.(QuestionsServer).ReorderQuestion(ctx, in)
 	}
-	return out, nil
-}
-
-func (c *quizAnswersClient) ListChoice(ctx context.Context, in *ListChoiceRequest, opts ...grpc.CallOption) (*ListChoiceResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListChoiceResponse)
-	err := c.cc.Invoke(ctx, QuizAnswers_ListChoice_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Questions_ReorderQuestion_FullMethodName,
 	}
-	return out, nil
-}
-
-// QuizAnswersServer is the server API for QuizAnswers service.
-// All implementations must embed UnimplementedQuizAnswersServer
-// for forward compatibility.
-type QuizAnswersServer interface {
-	ValidateQuestionAnswers(context.Context, *ValidateQuestionAnswersRequest) (*ValidateQuestionAnswersResponse, error)
-	CreateChoice(context.Context, *CreateChoiceRequest) (*CreateChoiceResponse, error)
-	UpdateChoice(context.Context, *UpdateChoiceRequest) (*UpdateChoiceResponse, error)
-	DeleteChoice(context.Context, *DeleteChoiceRequest) (*DeleteChoiceResponse, error)
-	ListChoice(context.Context, *ListChoiceRequest) (*ListChoiceResponse, error)
-	mustEmbedUnimplementedQuizAnswersServer()
-}
-
-// UnimplementedQuizAnswersServer must be embedded to have
-// forward compatible implementations.
-//
-// NOTE: this should be embedded by value instead of pointer to avoid a nil
-// pointer dereference when methods are called.
-type UnimplementedQuizAnswersServer struct{}
-
-func (UnimplementedQuizAnswersServer) ValidateQuestionAnswers(context.Context, *ValidateQuestionAnswersRequest) (*ValidateQuestionAnswersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ValidateQuestionAnswers not implemented")
-}
-func (UnimplementedQuizAnswersServer) CreateChoice(context.Context, *CreateChoiceRequest) (*CreateChoiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateChoice not implemented")
-}
-func (UnimplementedQuizAnswersServer) UpdateChoice(context.Context, *UpdateChoiceRequest) (*UpdateChoiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateChoice not implemented")
-}
-func (UnimplementedQuizAnswersServer) DeleteChoice(context.Context, *DeleteChoiceRequest) (*DeleteChoiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteChoice not implemented")
-}
-func (UnimplementedQuizAnswersServer) ListChoice(context.Context, *ListChoiceRequest) (*ListChoiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListChoice not implemented")
-}
-func (UnimplementedQuizAnswersServer) mustEmbedUnimplementedQuizAnswersServer() {}
-func (UnimplementedQuizAnswersServer) testEmbeddedByValue()                     {}
-
-// UnsafeQuizAnswersServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to QuizAnswersServer will
-// result in compilation errors.
-type UnsafeQuizAnswersServer interface {
-	mustEmbedUnimplementedQuizAnswersServer()
-}
-
-func RegisterQuizAnswersServer(s grpc.ServiceRegistrar, srv QuizAnswersServer) {
-	// If the following call pancis, it indicates UnimplementedQuizAnswersServer was
-	// embedded by pointer and is nil.  This will cause panics if an
-	// unimplemented method is ever invoked, so we test this at initialization
-	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestionsServer).ReorderQuestion(ctx, req.(*ReorderQuestionRequest))
 	}
-	s.RegisterService(&QuizAnswers_ServiceDesc, srv)
+	return interceptor(ctx, in, info, handler)
 }
 
-func _QuizAnswers_ValidateQuestionAnswers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Questions_ValidateQuestionAnswers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ValidateQuestionAnswersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizAnswersServer).ValidateQuestionAnswers(ctx, in)
+		return srv.(QuestionsServer).ValidateQuestionAnswers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizAnswers_ValidateQuestionAnswers_FullMethodName,
+		FullMethod: Questions_ValidateQuestionAnswers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizAnswersServer).ValidateQuestionAnswers(ctx, req.(*ValidateQuestionAnswersRequest))
+		return srv.(QuestionsServer).ValidateQuestionAnswers(ctx, req.(*ValidateQuestionAnswersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuizAnswers_CreateChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateChoiceRequest)
+func _Questions_AddAnswer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddAnswerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizAnswersServer).CreateChoice(ctx, in)
+		return srv.(QuestionsServer).AddAnswer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizAnswers_CreateChoice_FullMethodName,
+		FullMethod: Questions_AddAnswer_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizAnswersServer).CreateChoice(ctx, req.(*CreateChoiceRequest))
+		return srv.(QuestionsServer).AddAnswer(ctx, req.(*AddAnswerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuizAnswers_UpdateChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateChoiceRequest)
+func _Questions_DeleteAnswer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAnswerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizAnswersServer).UpdateChoice(ctx, in)
+		return srv.(QuestionsServer).DeleteAnswer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizAnswers_UpdateChoice_FullMethodName,
+		FullMethod: Questions_DeleteAnswer_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizAnswersServer).UpdateChoice(ctx, req.(*UpdateChoiceRequest))
+		return srv.(QuestionsServer).DeleteAnswer(ctx, req.(*DeleteAnswerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuizAnswers_DeleteChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteChoiceRequest)
+func _Questions_OverrideAnswer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OverrideAnswerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizAnswersServer).DeleteChoice(ctx, in)
+		return srv.(QuestionsServer).OverrideAnswer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizAnswers_DeleteChoice_FullMethodName,
+		FullMethod: Questions_OverrideAnswer_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizAnswersServer).DeleteChoice(ctx, req.(*DeleteChoiceRequest))
+		return srv.(QuestionsServer).OverrideAnswer(ctx, req.(*OverrideAnswerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuizAnswers_ListChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListChoiceRequest)
+func _Questions_PutAnswers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutAnswersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuizAnswersServer).ListChoice(ctx, in)
+		return srv.(QuestionsServer).PutAnswers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuizAnswers_ListChoice_FullMethodName,
+		FullMethod: Questions_PutAnswers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuizAnswersServer).ListChoice(ctx, req.(*ListChoiceRequest))
+		return srv.(QuestionsServer).PutAnswers(ctx, req.(*PutAnswersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// QuizAnswers_ServiceDesc is the grpc.ServiceDesc for QuizAnswers service.
+func _Questions_ReorderAnswers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReorderAnswersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestionsServer).ReorderAnswers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Questions_ReorderAnswers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestionsServer).ReorderAnswers(ctx, req.(*ReorderAnswersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Questions_ServiceDesc is the grpc.ServiceDesc for Questions service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var QuizAnswers_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "quiz.v1.QuizAnswers",
-	HandlerType: (*QuizAnswersServer)(nil),
+var Questions_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "quiz.v1.Questions",
+	HandlerType: (*QuestionsServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "CreateQuestion",
+			Handler:    _Questions_CreateQuestion_Handler,
+		},
+		{
+			MethodName: "GetQuestion",
+			Handler:    _Questions_GetQuestion_Handler,
+		},
+		{
+			MethodName: "ListQuestion",
+			Handler:    _Questions_ListQuestion_Handler,
+		},
+		{
+			MethodName: "UpdateQuestion",
+			Handler:    _Questions_UpdateQuestion_Handler,
+		},
+		{
+			MethodName: "DeleteQuestion",
+			Handler:    _Questions_DeleteQuestion_Handler,
+		},
+		{
+			MethodName: "ReorderQuestion",
+			Handler:    _Questions_ReorderQuestion_Handler,
+		},
+		{
 			MethodName: "ValidateQuestionAnswers",
-			Handler:    _QuizAnswers_ValidateQuestionAnswers_Handler,
+			Handler:    _Questions_ValidateQuestionAnswers_Handler,
 		},
 		{
-			MethodName: "CreateChoice",
-			Handler:    _QuizAnswers_CreateChoice_Handler,
+			MethodName: "AddAnswer",
+			Handler:    _Questions_AddAnswer_Handler,
 		},
 		{
-			MethodName: "UpdateChoice",
-			Handler:    _QuizAnswers_UpdateChoice_Handler,
+			MethodName: "DeleteAnswer",
+			Handler:    _Questions_DeleteAnswer_Handler,
 		},
 		{
-			MethodName: "DeleteChoice",
-			Handler:    _QuizAnswers_DeleteChoice_Handler,
+			MethodName: "OverrideAnswer",
+			Handler:    _Questions_OverrideAnswer_Handler,
 		},
 		{
-			MethodName: "ListChoice",
-			Handler:    _QuizAnswers_ListChoice_Handler,
+			MethodName: "PutAnswers",
+			Handler:    _Questions_PutAnswers_Handler,
+		},
+		{
+			MethodName: "ReorderAnswers",
+			Handler:    _Questions_ReorderAnswers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
