@@ -1,0 +1,682 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /quizzes:
+        get:
+            tags:
+                - Quizzes
+            operationId: Quizzes_ListQuiz
+            parameters:
+                - name: pagination.page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pagination.pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.ListQuizResponse'
+        post:
+            tags:
+                - Quizzes
+            operationId: Quizzes_CreateQuiz
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.CreateQuizRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.CreateQuizResponse'
+    /quizzes/search:
+        get:
+            tags:
+                - Quizzes
+            operationId: Quizzes_SearchQuiz
+            parameters:
+                - name: query
+                  in: query
+                  schema:
+                    type: string
+                - name: pagination.page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pagination.pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.SearchQuizResponse'
+    /quizzes/{id}:
+        get:
+            tags:
+                - Quizzes
+            operationId: Quizzes_GetQuiz
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.GetQuizResponse'
+        delete:
+            tags:
+                - Quizzes
+            operationId: Quizzes_DeleteQuiz
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.DeleteQuizResponse'
+        patch:
+            tags:
+                - Quizzes
+            operationId: Quizzes_UpdateQuiz
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.UpdateQuizRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.UpdateQuizResponse'
+    /quizzes/{quizId}/questions:
+        get:
+            tags:
+                - QuizQuestions
+            operationId: QuizQuestions_ListQuestion
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.ListQuestionResponse'
+        post:
+            tags:
+                - QuizQuestions
+            operationId: QuizQuestions_AddQuestion
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.AddQuestionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.AddQuestionResponse'
+    /quizzes/{quizId}/questions/{questionId}:
+        delete:
+            tags:
+                - QuizQuestions
+            operationId: QuizQuestions_DeleteQuestion
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.DeleteQuestionResponse'
+        patch:
+            tags:
+                - QuizQuestions
+            operationId: QuizQuestions_UpdateQuestion
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.UpdateQuestionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.UpdateQuestionResponse'
+    /quizzes/{quizId}/questions/{questionId}/answers/validate:
+        post:
+            tags:
+                - QuizAnswers
+            operationId: QuizAnswers_ValidateQuestionAnswers
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.ValidateQuestionAnswersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.ValidateQuestionAnswersResponse'
+    /quizzes/{quizId}/questions/{questionId}/choices:
+        get:
+            tags:
+                - QuizAnswers
+            operationId: QuizAnswers_ListChoice
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.ListChoiceResponse'
+        post:
+            tags:
+                - QuizAnswers
+            operationId: QuizAnswers_CreateChoice
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.CreateChoiceRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.CreateChoiceResponse'
+    /quizzes/{quizId}/questions/{questionId}/choices/{choiceId}:
+        delete:
+            tags:
+                - QuizAnswers
+            operationId: QuizAnswers_DeleteChoice
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: choiceId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.DeleteChoiceResponse'
+        patch:
+            tags:
+                - QuizAnswers
+            operationId: QuizAnswers_UpdateChoice
+            parameters:
+                - name: quizId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: questionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: choiceId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/quiz.v1.UpdateChoiceRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/quiz.v1.UpdateChoiceResponse'
+components:
+    schemas:
+        quiz.v1.AddQuestionRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                question:
+                    type: string
+                difficulty:
+                    type: integer
+                    format: enum
+                order:
+                    type: number
+                    format: float
+        quiz.v1.AddQuestionResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                question:
+                    $ref: '#/components/schemas/quiz.v1.QuizQuestion'
+        quiz.v1.AnswerResult:
+            type: object
+            properties:
+                answer:
+                    type: string
+                isCorrect:
+                    type: boolean
+        quiz.v1.Audit:
+            type: object
+            properties:
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
+                deletedBy:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+                deletedAt:
+                    type: string
+        quiz.v1.Choice:
+            type: object
+            properties:
+                id:
+                    type: string
+                choice:
+                    type: string
+                order:
+                    type: number
+                    format: float
+                isCorrect:
+                    type: boolean
+        quiz.v1.CreateChoiceRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                choice:
+                    type: string
+                order:
+                    type: number
+                    format: float
+                isCorrect:
+                    type: boolean
+        quiz.v1.CreateChoiceResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                choice:
+                    $ref: '#/components/schemas/quiz.v1.Choice'
+        quiz.v1.CreateQuizRequest:
+            type: object
+            properties:
+                title:
+                    type: string
+                description:
+                    type: string
+                duration:
+                    type: string
+                thumbnail:
+                    type: string
+                cover:
+                    type: string
+                category:
+                    type: string
+                tags:
+                    type: array
+                    items:
+                        type: string
+                metadata:
+                    type: object
+                    additionalProperties:
+                        type: string
+        quiz.v1.CreateQuizResponse:
+            type: object
+            properties:
+                quiz:
+                    $ref: '#/components/schemas/quiz.v1.Quiz'
+        quiz.v1.DeleteChoiceResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+        quiz.v1.DeleteQuestionResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+        quiz.v1.DeleteQuizResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+        quiz.v1.GetQuizResponse:
+            type: object
+            properties:
+                quiz:
+                    $ref: '#/components/schemas/quiz.v1.Quiz'
+        quiz.v1.ListChoiceResponse:
+            type: object
+            properties:
+                choices:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.Choice'
+        quiz.v1.ListQuestionResponse:
+            type: object
+            properties:
+                questions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.QuizQuestion'
+        quiz.v1.ListQuizResponse:
+            type: object
+            properties:
+                quizzes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.Quiz'
+                pagination:
+                    $ref: '#/components/schemas/quiz.v1.Pagination'
+        quiz.v1.Pagination:
+            type: object
+            properties:
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        quiz.v1.Quiz:
+            type: object
+            properties:
+                id:
+                    type: string
+                userId:
+                    type: string
+                title:
+                    type: string
+                description:
+                    type: string
+                duration:
+                    type: string
+                difficulty:
+                    type: integer
+                    format: enum
+                thumbnail:
+                    type: string
+                cover:
+                    type: string
+                category:
+                    type: string
+                tags:
+                    type: array
+                    items:
+                        type: string
+                metadata:
+                    type: object
+                    additionalProperties:
+                        type: string
+                audit:
+                    $ref: '#/components/schemas/quiz.v1.Audit'
+        quiz.v1.QuizQuestion:
+            type: object
+            properties:
+                id:
+                    type: string
+                question:
+                    type: string
+                answers:
+                    type: array
+                    items:
+                        type: string
+                correctAnswer:
+                    type: integer
+                    format: uint32
+                difficulty:
+                    type: integer
+                    format: enum
+                audit:
+                    $ref: '#/components/schemas/quiz.v1.Audit'
+        quiz.v1.SearchQuizResponse:
+            type: object
+            properties:
+                quizzes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.Quiz'
+                pagination:
+                    $ref: '#/components/schemas/quiz.v1.Pagination'
+        quiz.v1.UpdateChoiceRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                choiceId:
+                    type: string
+                choice:
+                    type: string
+                order:
+                    type: number
+                    format: float
+                isCorrect:
+                    type: boolean
+        quiz.v1.UpdateChoiceResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                choiceId:
+                    type: string
+                choice:
+                    $ref: '#/components/schemas/quiz.v1.Choice'
+        quiz.v1.UpdateQuestionRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                question:
+                    $ref: '#/components/schemas/quiz.v1.QuizQuestion'
+        quiz.v1.UpdateQuestionResponse:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                question:
+                    $ref: '#/components/schemas/quiz.v1.QuizQuestion'
+        quiz.v1.UpdateQuizRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                description:
+                    type: string
+                duration:
+                    type: string
+                thumbnail:
+                    type: string
+                cover:
+                    type: string
+                category:
+                    type: string
+                tags:
+                    type: array
+                    items:
+                        type: string
+                metadata:
+                    type: object
+                    additionalProperties:
+                        type: string
+        quiz.v1.UpdateQuizResponse:
+            type: object
+            properties:
+                quiz:
+                    $ref: '#/components/schemas/quiz.v1.Quiz'
+        quiz.v1.ValidateQuestionAnswersRequest:
+            type: object
+            properties:
+                quizId:
+                    type: string
+                questionId:
+                    type: string
+                answers:
+                    type: array
+                    items:
+                        type: string
+        quiz.v1.ValidateQuestionAnswersResponse:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/quiz.v1.AnswerResult'
+tags:
+    - name: QuizAnswers
+    - name: QuizQuestions
+    - name: Quizzes
