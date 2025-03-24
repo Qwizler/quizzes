@@ -72,6 +72,13 @@ func QuestionToPb(q *Question) *pb.Question {
 	if q.Hint != "" {
 		question.Hint = &q.Hint
 	}
+	if q.Answers != nil {
+		var answers []string
+		for _, a := range q.Answers {
+			answers = append(answers, a.Text)
+		}
+		question.Answers = answers
+	}
 	if q.Difficulty != 0 {
 		question.Difficulty = pb.Difficulty(q.Difficulty)
 	}

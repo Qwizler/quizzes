@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.opentelemetry.io/otel/trace"
 	pb "quiz/api/quizzes/v1"
@@ -14,6 +15,14 @@ type Answer struct {
 	Text        string `json:"text"`
 	isCorrect   bool
 	explanation string
+}
+
+func (a *Answer) IsCorrect() bool {
+	return a.isCorrect
+}
+
+func (a *Answer) Explanation() string {
+	return a.explanation
 }
 
 func (a *Answer) SetIsCorrect(isCorrect bool) *Answer {
@@ -51,7 +60,7 @@ type ReorderPayload struct {
 type QuestionsRepo interface {
 	Save(ctx context.Context, q *Question) (*Question, error)
 	GetByID(ctx context.Context, id string) (*Question, error)
-	List(ctx context.Context, pagination *Pagination) ([]*Question, error)
+	List(ctx context.Context, quizID string, pagination *Pagination) ([]*Question, error)
 	Update(ctx context.Context, q *Question) (*Question, error)
 	Delete(ctx context.Context, id string) (*Question, error)
 }
@@ -76,7 +85,7 @@ func (u *QuestionsUsecase) CreateQuestion(ctx context.Context, q *Question, _ans
 	answers := make([]Answer, 0, len(_answers))
 	for _, a := range _answers {
 		answers = append(answers, Answer{
-			ID:          bson.NewObjectID().Hex(),
+			ID:          uuid.New().String(),
 			Text:        a.Text,
 			isCorrect:   a.IsCorrect,
 			explanation: *a.Explanation,
@@ -105,11 +114,11 @@ func (u *QuestionsUsecase) GetQuestion(ctx context.Context, id string) (*Questio
 	return res, nil
 }
 
-func (u *QuestionsUsecase) ListQuestion(ctx context.Context, pagination *Pagination) ([]*Question, error) {
+func (u *QuestionsUsecase) ListQuestion(ctx context.Context, quizID string, pagination *Pagination) ([]*Question, error) {
 	ctx, span := u.tracer.Start(ctx, "biz.QuestionsUsecase.ListQuestion")
 	defer span.End()
 
-	res, err := u.repo.List(ctx, pagination)
+	res, err := u.repo.List(ctx, quizID, pagination)
 	if err != nil {
 		u.log.Warn(err)
 		return nil, err

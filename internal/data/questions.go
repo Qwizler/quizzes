@@ -15,10 +15,10 @@ import (
 )
 
 type Answer struct {
-	ID          bson.ObjectID `bson:"_id,omitempty"`
-	Text        string        `bson:"answer"`
-	IsCorrect   bool          `bson:"is_correct"`
-	Explanation string        `bson:"explanation"`
+	ID          string `bson:"id,omitempty"`
+	Text        string `bson:"answer"`
+	IsCorrect   bool   `bson:"is_correct"`
+	Explanation string `bson:"explanation"`
 }
 
 type Question struct {
@@ -77,6 +77,8 @@ func (r *QuestionsRepo) Save(ctx context.Context, q *biz.Question) (*biz.Questio
 		hex := oid.Hex()
 		r.log.Debugf("inserted id is object id: %s", hex)
 		resQuestion := question.Biz()
+		resQuestion.ID = hex
+		r.log.Debugf("inserted question: %+v", resQuestion)
 		return resQuestion, nil
 	}
 	return nil, errors.InternalServer("inserted id is not object id", "inserted id is not object id")
@@ -112,11 +114,19 @@ func (r QuestionsRepo) GetByID(ctx context.Context, id string) (*biz.Question, e
 	return q.Biz(), nil
 }
 
-func (r QuestionsRepo) List(ctx context.Context, pagination *biz.Pagination) ([]*biz.Question, error) {
+func (r QuestionsRepo) List(ctx context.Context, quizID string, pagination *biz.Pagination) ([]*biz.Question, error) {
 	ctx, span := r.tracer.Start(ctx, "data.QuestionsRepo.List")
 	defer span.End()
+	// error the provided hex string is not a valid ObjectID"
+
+	oid, err := bson.ObjectIDFromHex(quizID)
+	if err != nil {
+		r.log.Warn(err)
+		return nil, err
+	}
 	opts := options.Find().SetSkip(int64(pagination.Page * pagination.Size)).SetLimit(int64(pagination.Size))
-	cur, err := r.coll.Find(ctx, bson.M{}, opts)
+	filter := bson.M{"quiz_id": oid}
+	cur, err := r.coll.Find(ctx, filter, opts)
 	if err != nil {
 		r.log.Warn(err)
 		return nil, err

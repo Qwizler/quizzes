@@ -12,6 +12,10 @@ paths:
                 - Quizzes
             operationId: Quizzes_ListQuiz
             parameters:
+                - name: quizId
+                  in: query
+                  schema:
+                    type: string
                 - name: pagination.page
                   in: query
                   schema:

@@ -70,7 +70,7 @@ func (s *QuestionsService) ListQuestion(ctx context.Context, req *pb.ListQuestio
 		Size: req.GetPagination().GetPageSize(),
 	}
 
-	questions, err := s.uc.ListQuestion(ctx, pagination)
+	questions, err := s.uc.ListQuestion(ctx, req.GetQuizId(), pagination)
 	if err != nil {
 		s.log.Warn(err)
 		return nil, err

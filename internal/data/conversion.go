@@ -135,6 +135,20 @@ func (q *Question) Biz() *biz.Question {
 	if q.Difficulty != nil {
 		bizQuestion.Difficulty = *q.Difficulty
 	}
+	if q.Answers != nil {
+		var answers []biz.Answer
+		for _, a := range q.Answers {
+			answer := &biz.Answer{
+				Text: a.Text,
+			}
+			answer.SetIsCorrect(a.IsCorrect)
+			if a.Explanation != "" {
+				answer.SetExplanation(a.Explanation)
+			}
+			answers = append(answers, *answer)
+		}
+		bizQuestion.Answers = answers
+	}
 	if q.Order != 0 {
 		bizQuestion.Order = q.Order
 	}

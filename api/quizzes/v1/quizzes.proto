@@ -102,6 +102,7 @@ message GetQuizResponse {
 }
 
 message ListQuizRequest {
+  string quiz_id = 1;
   optional Pagination pagination = 2;
 }
 message ListQuizResponse {
@@ -219,6 +220,10 @@ message Answer {
   optional string explanation = 4;
 }
 message Question {
+  message Answer {
+    string ID = 1;
+    string text = 2;
+  }
   string id = 1;
   string quiz_id = 2;
   string question = 3;
